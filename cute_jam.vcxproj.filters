@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\cute_jam\cute.cpp" />
+    <ClCompile Include="src\cute_jam\entity_cpp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\cute_jam\input.h" />
+    <ClInclude Include="src\cute_jam\env.h" />
+    <ClInclude Include="src\cute_jam\cute_headers.h" />
+    <ClInclude Include="src\cute_jam\alloc.h" />
+    <ClInclude Include="src\cute_jam\audio.h" />
+    <ClInclude Include="src\cute_jam\graphics.h" />
+    <ClInclude Include="src\cute_jam\sprite.h" />
+    <ClInclude Include="src\cute_jam\animation.h" />
+    <ClInclude Include="src\cute_jam\example_animation.h" />
+    <ClInclude Include="src\cute_jam\tiles.h" />
+    <ClInclude Include="src\cute_jam\font.h" />
+    <ClInclude Include="src\cute_jam\entity.h" />
+  </ItemGroup>
+</Project>
