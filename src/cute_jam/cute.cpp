@@ -37,6 +37,7 @@
 
 #include <cute_jam/coin.h>
 #include <cute_jam/dog.h>
+#include <cute_jam/mask_shader.h>
 
 #include <cute_jam/load_objects_from_map_cpp.h>
 
