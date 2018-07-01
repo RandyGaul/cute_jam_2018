@@ -245,7 +245,7 @@ void update_player(entity_t* entity, float dt)
 			printf("%d\n", tile.tileID);
 			switch (tile.tileID)
 			{
-			case 19: // spikes / death tile
+			case 18: // spikes / death tile
 				player->quote_x = player->startPos.x;
 				player->quote_y = player->startPos.y;
 				player->quote_vel_x = 0;

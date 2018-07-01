@@ -74,6 +74,7 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	example_tiles_init();
 
 	play_music("/data/music/overworld_cute.wav");
+	play_sound("/data/sounds/win_or_lvlcomplete.wav");
 
 	// Setup the player.
 	env->player = create_player();
