@@ -29,7 +29,7 @@ coin_t* create_coin(int x = 0, int y = 0)
 void grab_coin(coin_t*& coin)
 {
 	play_sound("/data/sounds/coin.wav");
-	play_sound("/data/sounds/meow.wav");
+	//play_sound("/data/sounds/meow.wav");
 	env->coin_count++;
 	remove_entity(coin);
 	coin = nullptr;

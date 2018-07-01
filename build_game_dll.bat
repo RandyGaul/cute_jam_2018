@@ -16,7 +16,7 @@ if not defined DEV_ENV_DIR (
 set DEV_ENV_DIR= ???
 
 set CFLAGS= -Zi -nologo -I../ -I../src /Fdcute.pdb
-set CFLAGS= -D__WINDOWS__ -EHa- -wd4577 -Ox %CFLAGS%
+set CFLAGS= -D__WINDOWS__ -EHa- -wd4577 %CFLAGS%
 set LFLAGS= -incremental:no -opt:ref
 
 set LFLAGS= user32.lib kernel32.lib opengl32.lib gdi32.lib dsound.lib SDL2.lib SDL2main.lib %LFLAGS%
