@@ -35,6 +35,8 @@
 #include <cute_jam/example_tiles.h>
 #include <cute_jam/example_animation.h>
 
+#include <cute_jam/coin.h>
+
 // This must come last (or at least after all entity types, so the global vtable can be constructed).
 #include <cute_jam/entity_cpp.h>
 
@@ -67,7 +69,10 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	example_tiles_init();
 
 	// Setup the player.
-	create_player();
+	env->player = create_player();
+
+	coin_t* coin = create_coin();
+	set_coin_position(coin, -100, 0);
 
 	return 0;
 }
@@ -123,6 +128,11 @@ EXPORT int main_loop(launcher_t* launcher)
 	}
 
 	draw_text(env->courier_new, "Press right arrow key to change demo.", 0, 220, 2);
+
+	// Display the number of coins collected
+	char coin_text[16];
+	sprintf(coin_text, "Coins: %d", env->coin_count);
+	draw_text(env->courier_new, coin_text, -280, 230, 2);
 
 	update_entities(env->entity_list, dt);
 	draw_entities(env->entity_list);
