@@ -78,6 +78,10 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 
 	init_coins();
 
+	setup_mask_shader();
+
+
+
 	srand(time(0));
 
 	return 0;
@@ -136,6 +140,8 @@ EXPORT int main_loop(launcher_t* launcher)
 	}
 
 	draw_text(env->courier_new, "Press right arrow key to change demo.", 0, 220, 2);
+
+	update_mask_shader();
 
 	// Display the number of coins collected
 	char coin_text[16];

@@ -72,7 +72,7 @@ struct env_t
 	// Graphics
 	gl_shader_t mask_shader;
 	gl_renderable_t mask_renderable;
-	vertex_t mask_verts[6];
+	struct vertex_t* mask_verts =0;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);
