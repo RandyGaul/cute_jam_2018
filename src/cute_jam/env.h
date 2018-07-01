@@ -62,10 +62,14 @@ struct env_t
 	int tile_demo_tile_count = 0;
 	struct tile_t* tile_demo_tiles = 0;
 
+	// Game stuff
+	struct player_t* player = 0;
+	int coin_count = 0;
 	float game_time = 0;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);
+void remove_entity(entity_t* entity);
 int load_file(const char* path, void** out, int* size);
 void add_task(void (*func)(void* udata), void* param);
 void threadpool_kick_and_wait();

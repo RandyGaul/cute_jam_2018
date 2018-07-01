@@ -79,7 +79,7 @@ struct player_t : public entity_t
 	vec2 startPos;
 };
 
-void create_player()
+player_t* create_player()
 {
 	player_t* player = NEW(player_t);
 	player->startPos.x = player->quote_x;
@@ -90,6 +90,7 @@ void create_player()
 	player->quote_circle.r = player->quote_sprite.sy / 2.0f;
 
 	add_entity_to_list(&env->entity_list, player);
+	return player;
 }
 
 void DrawDebugCircle(c2v p, float r, int kSegs, float _r = 1, float _g = 1, float _b = 1)
@@ -226,6 +227,23 @@ void update_player(entity_t* entity, float dt)
 			v = c2Sub(v, c2Mulvs(n, c2Dot(v, n)));
 			player->quote_vel_x = v.x;
 			player->quote_vel_y = v.y;
+
+			// tile interactions with player
+			printf("%d\n", tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19: // spikes / death tile
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				player->quote_vel_y = 0;
+				break;
+			case 44: // bouncy
+				player->quote_vel_y += 450;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
