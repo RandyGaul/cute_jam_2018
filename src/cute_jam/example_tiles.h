@@ -201,18 +201,6 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
-			printf("%d\n",tile.tileID);
-			switch (tile.tileID)
-			{
-			case 19:
-				player->quote_x = player->startPos.x;
-				player->quote_y = player->startPos.y;
-				player->quote_vel_x = 0;
-				break;
-			default:
-				break;
-			}
-
 			// Move quote out of colliding configuration.
 			float depth = -m.depths[0];
 			c2v n = m.n;
@@ -226,6 +214,23 @@ void update_player(entity_t* entity, float dt)
 			v = c2Sub(v, c2Mulvs(n, c2Dot(v, n)));
 			player->quote_vel_x = v.x;
 			player->quote_vel_y = v.y;
+
+			// tile interactions with player
+			printf("%d\n", tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19: // spikes / death tile
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				player->quote_vel_y = 0;
+				break;
+			case 44: // bouncy
+				player->quote_vel_y += 450;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
