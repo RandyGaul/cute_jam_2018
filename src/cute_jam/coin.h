@@ -1,5 +1,7 @@
 struct coin_t;
 void set_coin_position(coin_t* coin, int x, int y);
+const int COIN_ID = 0;
+const int TILE_SIZE = 16;
 
 struct coin_t : public entity_t
 {
@@ -8,17 +10,15 @@ struct coin_t : public entity_t
 	c2Circle circle;
 };
 
-coin_t* create_coin()
+coin_t* create_coin(int x = 0, int y = 0)
 {
 	coin_t* coin = NEW(coin_t);
 	coin->sprite = get_sprite("/data/sprites/coin.png");
 	coin->sprite.sx *= 2;
 	coin->sprite.sy *= 2;
 	coin->circle.r = 15;
-	set_coin_position(coin, 0, 0);
+	set_coin_position(coin, x, y);
 	add_entity_to_list(&env->entity_list, coin);
-	prefetch_audio("/data/sounds/coin.wav");
-	prefetch_audio("/data/sounds/meow.wav");
 	return coin;
 }
 
