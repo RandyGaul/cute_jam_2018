@@ -3,6 +3,8 @@
 #define DOG_VISION_RANGE 200
 #define DOG_MOVEMENT_SPEED 60
 #define DOG_ROTATION_SPEED 10
+#define MIN_DOGS 12
+#define MAX_DOGS 15
 
 struct dog_t : public entity_t
 {
@@ -25,9 +27,9 @@ void create_dog()
 {
 	dog_t* dog = NEW(dog_t);
 	dog->dog_head_sprite = get_sprite("/data/cavestory/sprites/dog_head.png");
-	dog->num_sections = 2;
-	dog->pos.x = rand() % 15 + 2;
-	dog->pos.y = 10;
+	dog->num_sections = rand()% 3;
+	dog->pos.x = rand() % env->map_width - env->map_width / 2;
+	dog->pos.y = rand() % env->map_height - env->map_height / 2;
 	dog->angle = 45;
 	dog->dog_head_sprite.sx *= 2;
 	dog->dog_head_sprite.sy *= 2;
@@ -51,6 +53,15 @@ void create_dog()
 	update_sprite_rotations(dog);
 
 	add_entity_to_list(&env->entity_list, dog);
+}
+
+void create_pups()
+{
+	int numDogs = rand() % (MAX_DOGS + 1 - MIN_DOGS) + MIN_DOGS;
+	for (int i = 0; i < numDogs; i++)
+	{
+		create_dog();
+	}
 }
 
 void collide(dog_t* dawg)

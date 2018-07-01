@@ -69,6 +69,9 @@ struct env_t
 	float game_time = 0;
 	transform camera;
 	player_t* playa = 0;
+
+	int map_width = 0;
+	int map_height = 0;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);
