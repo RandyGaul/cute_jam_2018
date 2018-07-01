@@ -17,5 +17,6 @@
     <ClInclude Include="src\cute_jam\tiles.h" />
     <ClInclude Include="src\cute_jam\font.h" />
     <ClInclude Include="src\cute_jam\entity.h" />
+    <ClInclude Include="src\cute_jam\dog.h" />
   </ItemGroup>
 </Project>

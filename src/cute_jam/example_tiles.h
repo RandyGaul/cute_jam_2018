@@ -74,17 +74,49 @@ struct player_t : public entity_t
 	int debug_draw_shapes = 1;
 	int dir = 0;
 	sprite_t quote_sprite;
+	float jetpackCD = 0; // 0 is ready to use
+	float jetpackPower = 150.0;
+	vec2 startPos;
 };
 
 void create_player()
 {
 	player_t* player = NEW(player_t);
+	player->startPos.x = player->quote_x;
+	player->startPos.y = player->quote_y;
 	player->quote_sprite = get_sprite("/data/cavestory/sprites/quote.png");
 	player->quote_sprite.sx *= 2.0f;
 	player->quote_sprite.sy *= 2.0f;
 	player->quote_circle.r = player->quote_sprite.sy / 2.0f;
 
 	add_entity_to_list(&env->entity_list, player);
+}
+
+void DrawDebugCircle(c2v p, float r, int kSegs, float _r = 1, float _g = 1, float _b = 1)
+{
+	gl_line_color(env->ctx_gl, _r, _g, _b);
+
+	float theta = 0;
+	float inc = 3.14159265f * 2.0f / (float)kSegs;
+	float px, py;
+	c2SinCos(theta, &py, &px);
+	px *= r; py *= r;
+	px += p.x; py += p.y;
+	for (int i = 0; i <= kSegs; ++i)
+	{
+		theta += inc;
+		float x, y;
+		c2SinCos(theta, &y, &x);
+		x *= r; y *= r;
+		x += p.x; y += p.y;
+		gl_line(env->ctx_gl, x, y, 0, px, py, 0);
+		px = x; py = y;
+	}
+}
+
+void DrawDebugCircle(v2 p, float r, int kSegs, float _r = 1, float _g = 1, float _b = 1)
+{
+	DrawDebugCircle(c2V(p.x, p.y), r, kSegs, _r, _g, _b);
 }
 
 void update_player(entity_t* entity, float dt)
@@ -118,31 +150,35 @@ void update_player(entity_t* entity, float dt)
 		}
 	}
 
-	if (key_once(KEY_SPACE))
+	// debug draw the mouse position
+	v2 mousep(g_mouse.x - env->windowWidth / 2.0,
+		-g_mouse.y + env->windowHeight / 2.0);
+	//DrawDebugCircle(mousep, 10, 40);
+
+	// debug draw the line from player to mouse
+	//gl_line(env->ctx_gl, mousep.x, mousep.y, 0, ctx->quote_x,
+	//ctx->quote_y, 0);
+
+	// update the jetpack cooldown timer
+	if (player->jetpackCD > 0)
 	{
-		player->quote_vel_y = 250.0f;
+		player->jetpackCD -= dt; // subtract time from cooldown timer
+
+		if (player->jetpackCD < 0) // if it goes below zero make it zero
+			player->jetpackCD = 0;
 	}
 
-	if (key_down(KEY_A))
+	// check if we should fire the jetpack
+	if (player->jetpackCD == 0
+		&& mouse_once(g_mouse.left_button)) // LMB pressed
 	{
-		player->dir = 1;
-	}
+		v2 mouseDir(mousep.x - player->quote_x, mousep.y - player->quote_y);
+		mouseDir = norm(mouseDir);
 
-	else if (key_down(KEY_D))
-	{
-		player->dir = 2;
-	}
+		player->quote_vel_x = mouseDir.x * 150.0;
+		player->quote_vel_y = mouseDir.y * 150.0;
 
-	else
-	{
-		player->dir = 0;
-	}
-
-	switch (player->dir)
-	{
-	case 0: player->quote_vel_x = 0; break;
-	case 1: player->quote_vel_x = -100.0f; break;
-	case 2: player->quote_vel_x = 100.0f; break;
+		player->jetpackCD += 1;
 	}
 
 	// Quote's physics integration.
@@ -165,6 +201,18 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
+			printf("%d\n",tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19:
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				break;
+			default:
+				break;
+			}
+
 			// Move quote out of colliding configuration.
 			float depth = -m.depths[0];
 			c2v n = m.n;

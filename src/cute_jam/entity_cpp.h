@@ -12,6 +12,7 @@ struct vtable_t
 
 vtable_t g_vtable[] = {
 	VTABLE_ENTRY(player),
+	VTABLE_ENTRY(dog)
 };
 
 void update_entities(entity_t* entity_list, float dt)
