@@ -75,7 +75,7 @@ struct player_t : public entity_t
 	int dir = 0;
 	sprite_t quote_sprite;
 	float jetpackCD = 0; // 0 is ready to use
-	float jetpackPower = 150.0;
+	float jetpackPower = 150.0, bounceHeight = 350;
 	vec2 startPos, lastMouseDir = v2(0,0);
 };
 
@@ -152,6 +152,12 @@ void update_player(entity_t* entity, float dt)
 			px = x; py = y;
 		}
 	}
+	if (key_down(KEY_9)) // kill player
+	{
+		player->quote_x = player->startPos.x;
+		player->quote_y = player->startPos.y;
+		player->quote_vel_x = 0;
+	}
 
 	// debug draw the mouse position
 	v2 mousep(g_mouse.x - env->windowWidth / 2.0,
@@ -179,8 +185,8 @@ void update_player(entity_t* entity, float dt)
 		player->lastMouseDir = mouseDir;
 		mouseDir = norm(mouseDir);
 
-		player->quote_vel_x = mouseDir.x * player->jetpackPower;
-		player->quote_vel_y = mouseDir.y * player->jetpackPower;
+		player->quote_vel_x += mouseDir.x * player->jetpackPower;
+		player->quote_vel_y += mouseDir.y * player->jetpackPower;
 		
 		play_sound("/data/sounds/jetpack.wav");
 		
@@ -245,7 +251,7 @@ void update_player(entity_t* entity, float dt)
 				player->quote_vel_y = 0;
 				break;
 			case 7: // bouncy
-				player->quote_vel_y += 450;
+				player->quote_vel_y += player->bounceHeight;
 				break;
 			default:
 				break;
