@@ -12,6 +12,7 @@ struct env_t
 	assetsys_t* assetsys;
 	filewatch_t* filewatch;
 	cute_threadpool_t* threadpool;
+	float windowWidth, windowHeight;
 
 	// Audio system.
 	cs_context_t* ctx_cute_sound;

@@ -88,6 +88,12 @@ EXPORT int main_loop(launcher_t* launcher)
 	float dt = ct_time();
 	pump_SDL_messages();
 
+	// get the window width and height
+	int w, h;
+	SDL_GetWindowSize(env->window, &w, &h);
+	env->windowWidth = w;
+	env->windowHeight = h;
+
 	// Calc and display fps
 	static float dt_accum;
 	static uint64_t tick_count = 0;
