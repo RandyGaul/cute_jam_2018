@@ -66,6 +66,7 @@ struct env_t
 	struct player_t* player = 0;
 	int coin_count = 0;
 	float game_time = 0;
+	transform camera;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);

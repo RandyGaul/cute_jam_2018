@@ -69,6 +69,8 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	example_spritebatch_load_images();
 	example_tiles_init();
 
+	play_music("/data/music/overworld_cute.wav");
+
 	// Setup the player.
 	env->player = create_player();
 	create_dog();
@@ -116,6 +118,11 @@ EXPORT int main_loop(launcher_t* launcher)
 		//if (fps > 10000.0f) printf("fps : Really fast\n");
 		//else printf("fps : %f\n", fps);
 	}
+
+	//camera focus on player
+	env->camera.p.x = env->player->quote_x;
+	env->camera.p.y = env->player->quote_y;
+	env->camera.r = make_rotation();
 
 	update_audio(dt);
 

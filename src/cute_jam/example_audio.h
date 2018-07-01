@@ -9,7 +9,7 @@ void do_audio_example()
 
 	if (key_once(KEY_1))
 	{
-		play_music("/data/music/Balrog's Theme.ogg");
+		play_music("/data/music/overworld_cute.wav");
 	}
 
 	if (key_once(KEY_2))
