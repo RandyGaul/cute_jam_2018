@@ -38,6 +38,8 @@
 #include <cute_jam/coin.h>
 #include <cute_jam/dog.h>
 
+#include <cute_jam/load_objects_from_map_cpp.h>
+
 // This must come last (or at least after all entity types, so the global vtable can be constructed).
 #include <cute_jam/entity_cpp.h>
 
@@ -74,9 +76,6 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	// Setup the player.
 	env->player = create_player();
 	create_dog();
-
-	coin_t* coin = create_coin();
-	set_coin_position(coin, -100, 0);
 
 	srand(time(0));
 
@@ -115,8 +114,8 @@ EXPORT int main_loop(launcher_t* launcher)
 	if (tick_count++ % 10 == 0)
 	{
 		float fps = 1.0f / dt_accum;
-		//if (fps > 10000.0f) printf("fps : Really fast\n");
-		//else printf("fps : %f\n", fps);
+		if (fps > 10000.0f) printf("fps : Really fast\n");
+		else printf("fps : %f\n", fps);
 	}
 
 	//camera focus on player

@@ -88,6 +88,8 @@ player_t* create_player()
 	player->quote_sprite.sx *= 2.0f;
 	player->quote_sprite.sy *= 2.0f;
 	player->quote_circle.r = player->quote_sprite.sy / 2.0f;
+	
+	env->playa = player;
 
 	add_entity_to_list(&env->entity_list, player);
 	return player;
@@ -206,6 +208,18 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
+			//printf("%d\n",tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19:
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				break;
+			default:
+				break;
+			}
+
 			// Move quote out of colliding configuration.
 			float depth = -m.depths[0];
 			c2v n = m.n;

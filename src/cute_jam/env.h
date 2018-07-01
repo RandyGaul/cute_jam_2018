@@ -2,6 +2,7 @@ struct cute_font_t;
 using font_t = cute_font_t;
 
 struct env_t* env;
+struct player_t;
 
 struct env_t
 {
@@ -67,6 +68,7 @@ struct env_t
 	int coin_count = 0;
 	float game_time = 0;
 	transform camera;
+	player_t* playa = 0;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);

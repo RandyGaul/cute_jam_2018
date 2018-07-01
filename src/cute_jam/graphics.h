@@ -8,6 +8,7 @@ void init_graphics(int width_in_pixels, int height_in_pixels);
 void shutdown_graphics();
 SPRITEBATCH_U64 generate_texture_handle(void* pixels, int w, int h);
 void destroy_texture_handle(SPRITEBATCH_U64 texture_id);
+void make_sprite_quad(float x, float y, float sx, float sy, vertex_t* out);
 
 //--------------------------------------------------------------------------------------------------
 
@@ -136,6 +137,22 @@ void destroy_texture_handle(SPRITEBATCH_U64 texture_id)
 {
 	GLuint id = (GLuint)texture_id;
 	glDeleteTextures(1, &id);
+}
+
+void make_sprite_quad(float x, float y, float sx, float sy, vertex_t* out)
+{
+	out[0] = { v2(-0.5f, 0.5f), v2(0, 1) };
+	out[1] = { v2(-0.5f, -0.5f), v2(0, 0) };
+	out[2] = { v2(0.5f, 0.5f), v2(1, 1) };
+
+	out[3] = { v2(0.5f, 0.5f), v2(1, 1) };
+	out[4] = { v2(-0.5f, -0.5f), v2(0, 0) };
+	out[5] = { v2(0.5f, -0.5f), v2(1, 0) };
+
+	for (int i = 0; i < 6; ++i)
+	{
+		out[i].pos = out[i].pos * v2(sx, sy) + v2(x, y);
+	}
 }
 
 void setup_cute_gl(int width_in_pixels, int height_in_pixels)
