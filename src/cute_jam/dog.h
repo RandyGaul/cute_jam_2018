@@ -23,15 +23,21 @@ void create_dog()
 	dog->pos.x = rand() % 15 + 2;
 	dog->pos.y = 10;
 	dog->angle = 45;
+	dog->dog_head_sprite.sx *= 2;
+	dog->dog_head_sprite.sy *= 2;
 
 	dog->dog_bod_sprites = (sprite_t*)ALLOC(dog->num_sections * sizeof(sprite_t));
 
 	for (int i = 0; i < dog->num_sections; i++) 
 	{
 		dog->dog_bod_sprites[i] = get_sprite("/data/cavestory/sprites/dog_bod.png");
+		dog->dog_bod_sprites[i].sx *= 2;
+		dog->dog_bod_sprites[i].sy *= 2;
 	}
 
 	dog->dog_bootay_sprite = get_sprite("/data/cavestory/sprites/dog_bootay.png");
+	dog->dog_bootay_sprite.sx *= 2;
+	dog->dog_bootay_sprite.sy *= 2;
 
 	update_sprite_positions(dog);
 	update_sprite_rotations(dog);

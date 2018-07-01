@@ -201,7 +201,7 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
-			printf("%d\n",tile.tileID);
+			//printf("%d\n",tile.tileID);
 			switch (tile.tileID)
 			{
 			case 19:
