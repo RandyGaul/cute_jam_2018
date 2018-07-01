@@ -88,6 +88,8 @@ player_t* create_player()
 	player->quote_sprite.sx *= 2.0f;
 	player->quote_sprite.sy *= 2.0f;
 	player->quote_circle.r = player->quote_sprite.sy / 2.0f;
+	
+	env->playa = player;
 
 	add_entity_to_list(&env->entity_list, player);
 	return player;

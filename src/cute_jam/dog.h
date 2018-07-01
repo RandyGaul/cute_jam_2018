@@ -14,6 +14,7 @@ struct dog_t : public entity_t
 
 void update_sprite_positions(dog_t* dog);
 void update_sprite_rotations(dog_t* dog);
+void collide(dog_t* dawg);
 
 void create_dog()
 {
@@ -45,12 +46,47 @@ void create_dog()
 	add_entity_to_list(&env->entity_list, dog);
 }
 
+void collide(dog_t* dawg)
+{
+	float half_bod_length = (dawg->num_sections * dawg->dog_bod_sprites[0].sx) / 2;
+
+	c2v ll{ -half_bod_length - dawg->dog_head_sprite.sx / 2,
+		-dawg->dog_head_sprite.sy / 2 };
+	c2v ur{ half_bod_length + dawg->dog_bootay_sprite.sx / 2,
+		dawg->dog_bootay_sprite.sy / 2 };
+	c2AABB bb{ ll, ur};
+
+	c2Poly poly;
+	poly.count = 4;
+
+	c2BBVerts(poly.verts, &bb);
+
+	rotation rot{ sinf(dawg->angle), cosf(dawg->angle) };
+	transform trans{ rot, dawg->pos };
+
+	for (int i = 0; i < poly.count; i++) {
+		v2 transformedVert = mul(trans, v2(poly.verts[i].x, poly.verts[i].y));
+		poly.verts[i] = { transformedVert.x, transformedVert.y };
+	}
+
+	c2Manifold man;
+	c2Collide(&poly, 0, C2_POLY, &env->playa->quote_circle, 0, C2_CIRCLE, &man);
+
+	gl_line_color(env->ctx_gl, 1, 0, 0);
+
+	for (int i = 0; i < poly.count; i++) 
+	{
+		int nextIndex = i == poly.count - 1 ? 0 : i + 1;
+		gl_line(env->ctx_gl, poly.verts[i].x, poly.verts[i].y, 0, poly.verts[nextIndex].x, poly.verts[nextIndex].y, 0);
+	}
+}
+
 void update_sprite_positions(dog_t* dog) 
 {
-	float half_length = (dog->num_sections * dog->dog_bod_sprites[0].sx) / 2;
+	float half_length = (dog->num_sections * dog->dog_bod_sprites[0].sx + dog->dog_head_sprite.sx + dog->dog_bootay_sprite.sx) / 2;
 
-	dog->dog_head_sprite.x = dog->pos.x - (half_length + dog->dog_head_sprite.sx / 2) * cosf(dog->angle);
-	dog->dog_head_sprite.y = dog->pos.y - (half_length + dog->dog_head_sprite.sx / 2) * sinf(dog->angle);
+	dog->dog_head_sprite.x = dog->pos.x - (half_length - dog->dog_head_sprite.sx / 2) * cosf(dog->angle);
+	dog->dog_head_sprite.y = dog->pos.y - (half_length - dog->dog_head_sprite.sx / 2) * sinf(dog->angle);
 
 	for (int i = 0; i < dog->num_sections; i++)
 	{
@@ -58,8 +94,8 @@ void update_sprite_positions(dog_t* dog)
 		dog->dog_bod_sprites[i].y = dog->dog_head_sprite.y + (i + 1) * dog->dog_bod_sprites[i].sx * sinf(dog->angle);
 	}
 
-	dog->dog_bootay_sprite.x = dog->pos.x + (half_length + dog->dog_bootay_sprite.sx / 2) * cosf(dog->angle);
-	dog->dog_bootay_sprite.y = dog->pos.y + (half_length + dog->dog_bootay_sprite.sx / 2) * sinf(dog->angle);
+	dog->dog_bootay_sprite.x = dog->pos.x + (half_length - dog->dog_bootay_sprite.sx / 2) * cosf(dog->angle);
+	dog->dog_bootay_sprite.y = dog->pos.y + (half_length - dog->dog_bootay_sprite.sx / 2) * sinf(dog->angle);
 }
 
 void update_sprite_rotations(dog_t* dog)
@@ -81,11 +117,13 @@ void update_dog(entity_t* entity, float dt)
 {
 	dog_t* dog = (dog_t*)entity;
 
-	//dog->pos.y = sin(env->game_time * 3) * 10 + 10;
+	dog->pos.y = sin(env->game_time * 3) * 10 + 10;
 	dog->angle += dt * 3;
 
 	update_sprite_rotations(dog);
 	update_sprite_positions(dog);
+
+	collide(dog);
 }
 
 void draw_dog(entity_t* entity)
