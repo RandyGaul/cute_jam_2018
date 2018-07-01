@@ -24,6 +24,9 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 shape_t get_transformed_tile_shape(tile_t tile);
 void debug_draw_tile_shapes(tile_t* tiles, int tile_count);
 
+// in load_objects_from_map_cpp.h
+void load_objects_from_map(cute_tiled_object_t* object, float map_width, float map_height, float tile_size);
+
 //--------------------------------------------------------------------------------------------------
 
 void init_cavestory_tile_shapes()
@@ -342,6 +345,12 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 
 		tiles[i] = tile;
 	}
+
+	// The objects layer.
+	layer = map->layers->next;
+	cute_tiled_object_t* object = layer->objects;
+
+	load_objects_from_map(object, (float)map->width, (float)map->height, 16.0f);
 
 	cute_tiled_free_map(map);
 

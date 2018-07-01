@@ -88,6 +88,8 @@ player_t* create_player()
 	player->quote_sprite.sx *= 2.0f;
 	player->quote_sprite.sy *= 2.0f;
 	player->quote_circle.r = player->quote_sprite.sy / 2.0f;
+	
+	env->playa = player;
 
 	add_entity_to_list(&env->entity_list, player);
 	return player;
@@ -202,7 +204,7 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
-			printf("%d\n",tile.tileID);
+			//printf("%d\n",tile.tileID);
 			switch (tile.tileID)
 			{
 			case 19:
@@ -227,6 +229,23 @@ void update_player(entity_t* entity, float dt)
 			v = c2Sub(v, c2Mulvs(n, c2Dot(v, n)));
 			player->quote_vel_x = v.x;
 			player->quote_vel_y = v.y;
+
+			// tile interactions with player
+			printf("%d\n", tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19: // spikes / death tile
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				player->quote_vel_y = 0;
+				break;
+			case 44: // bouncy
+				player->quote_vel_y += 450;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
