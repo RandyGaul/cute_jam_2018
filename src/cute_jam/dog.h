@@ -94,7 +94,7 @@ void collide(dog_t* dawg)
 
 	if (man.count) 
 	{
-		//kill_player(env->playa);
+		kill_player(env->playa);
 	}
 
 	if (DOG_DEBUG_COLLISION) 

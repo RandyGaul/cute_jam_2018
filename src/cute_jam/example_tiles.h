@@ -82,9 +82,10 @@ struct player_t : public entity_t
 
 void kill_player(player_t* player)
 {
-	player->quote_x = player->startPos.x;
-	player->quote_y = player->startPos.y;
+	player->quote_x = rand() % env->map_width - env->map_width / 2;
+	player->quote_y = rand() % env->map_height - env->map_height / 2;
 	player->quote_vel_x = 0;
+	player->quote_vel_y = 0;
 }
 
 player_t* create_player()
