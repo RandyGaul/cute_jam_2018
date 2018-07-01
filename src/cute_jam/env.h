@@ -67,8 +67,11 @@ struct env_t
 	struct player_t* player = 0;
 	int coin_count = 0;
 	float game_time = 0;
+	transform camera;
 	player_t* playa = 0;
 
+	int map_width = 0;
+	int map_height = 0;
 	// Graphics
 	gl_shader_t mask_shader;
 	gl_renderable_t mask_renderable;

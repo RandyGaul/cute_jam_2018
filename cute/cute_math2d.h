@@ -126,6 +126,7 @@ CUTE_MATH2D_INLINE v2 abs(v2 a ) { return v2(abs(a.x), abs(a.y)); }
 CUTE_MATH2D_INLINE float hmin(v2 a ) { return min(a.x, a.y); }
 CUTE_MATH2D_INLINE float hmax(v2 a ) { return max(a.x, a.y); }
 CUTE_MATH2D_INLINE float len(v2 a) { return sqrt(dot(a, a)); }
+CUTE_MATH2D_INLINE float distance(v2 a, v2 b) { return sqrt(powf((a.x - b.x), 2) + powf((a.y - b.y), 2)); }
 CUTE_MATH2D_INLINE v2 norm(v2 a) { return a / len(a); }
 CUTE_MATH2D_INLINE v2 operator-(v2 a) { v2(-a.x, -a.y); }
 CUTE_MATH2D_INLINE v2 lerp(v2 a, v2 b, float t) { return a + (b - a) * t; }

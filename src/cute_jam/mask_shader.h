@@ -76,5 +76,5 @@ void update_mask_shader()
 	draw_meter(border_verts, env->player->quote_sprite.x, env->player->quote_sprite.y + vertical_offset, meter_width + border*2, meter_height + border*2, white, 0);*/
 	float red[] = { 1,0,0,1 };
 	static vertex_t meter_verts[6];
-	draw_meter(meter_verts, env->player->quote_sprite.x, env->player->quote_sprite.y + vertical_offset, meter_width, meter_height, red, env->playa->jetpackCD);
+	draw_meter(meter_verts, env->player->quote_sprite.x - env->camera.p.x, env->player->quote_sprite.y - env->camera.p.y + vertical_offset, meter_width, meter_height, red, env->playa->jetpackCD);
 }

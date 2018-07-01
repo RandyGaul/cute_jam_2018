@@ -1,5 +1,11 @@
 #pragma once
 
+#define DOG_VISION_RANGE 200
+#define DOG_MOVEMENT_SPEED 60
+#define DOG_ROTATION_SPEED 10
+#define MIN_DOGS 12
+#define MAX_DOGS 15
+
 struct dog_t : public entity_t
 {
 	dog_t() { id = EID_DOG;  }
@@ -8,6 +14,7 @@ struct dog_t : public entity_t
 	sprite_t dog_bootay_sprite;
 
 	v2 pos;
+	v2 vel;
 	int num_sections;
 	float angle;
 };
@@ -20,12 +27,14 @@ void create_dog()
 {
 	dog_t* dog = NEW(dog_t);
 	dog->dog_head_sprite = get_sprite("/data/cavestory/sprites/dog_head.png");
-	dog->num_sections = 3;
-	dog->pos.x = rand() % 15 + 2;
-	dog->pos.y = 10;
+	dog->num_sections = rand()% 3;
+	dog->pos.x = rand() % env->map_width - env->map_width / 2;
+	dog->pos.y = rand() % env->map_height - env->map_height / 2;
 	dog->angle = 45;
 	dog->dog_head_sprite.sx *= 2;
 	dog->dog_head_sprite.sy *= 2;
+	dog->vel.x = 0;
+	dog->vel.y = 0;
 
 	dog->dog_bod_sprites = (sprite_t*)ALLOC(dog->num_sections * sizeof(sprite_t));
 
@@ -44,6 +53,15 @@ void create_dog()
 	update_sprite_rotations(dog);
 
 	add_entity_to_list(&env->entity_list, dog);
+}
+
+void create_pups()
+{
+	int numDogs = rand() % (MAX_DOGS + 1 - MIN_DOGS) + MIN_DOGS;
+	for (int i = 0; i < numDogs; i++)
+	{
+		create_dog();
+	}
 }
 
 void collide(dog_t* dawg)
@@ -113,13 +131,35 @@ void update_sprite_rotations(dog_t* dog)
 	dog->dog_bootay_sprite.s = sinf(dog->angle);
 }
 
+void dog_intelligence(dog_t* dog, float dt)
+{
+	if (distance(dog->pos, v2(env->playa->quote_x, env->playa->quote_y)) < DOG_VISION_RANGE)
+	{
+		v2 facing = norm(v2(dog->dog_head_sprite.x, dog->dog_head_sprite.y) - v2(dog->dog_bootay_sprite.x, dog->dog_bootay_sprite.y));
+		v2 toPlayer = norm(v2(env->playa->quote_x, env->playa->quote_y) - dog->pos);
+		if (acos(dot(facing, toPlayer)) < .05)
+		{
+			// charge towards player
+			dog->vel = toPlayer * DOG_MOVEMENT_SPEED;
+		}
+		else {
+			int dir = (facing.x * toPlayer.y - facing.y * toPlayer.x) > 0 ? 1 : -1;
+			dog->angle += dt * dir * DOG_ROTATION_SPEED;
+		}
+	}
+	else
+	{
+		dog->vel = v2(0, 0);
+	}
+}
+
 void update_dog(entity_t* entity, float dt)
 {
 	dog_t* dog = (dog_t*)entity;
 
-	dog->pos.y = sin(env->game_time * 3) * 10 + 10;
-	dog->angle += dt * 3;
+	dog->pos += dog->vel * dt;
 
+	dog_intelligence(dog, dt);
 	update_sprite_rotations(dog);
 	update_sprite_positions(dog);
 

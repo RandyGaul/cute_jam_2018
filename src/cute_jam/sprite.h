@@ -16,8 +16,12 @@ struct image_t
 	SPRITEBATCH_U64 sprite_id;
 };
 
-#define push_sprite(sp) \
-	spritebatch_push(&env->spritebatch, sp.image_id, sp.image_w, sp.image_h, sp.x, sp.y, sp.sx, sp.sy, sp.c, sp.s, (SPRITEBATCH_U64)sp.depth)
+void push_sprite(sprite_t sp)
+{
+	sp.x -= env->camera.p.x;
+	sp.y -= env->camera.p.y;
+	spritebatch_push(&env->spritebatch, sp.image_id, sp.image_w, sp.image_h, sp.x, sp.y, sp.sx, sp.sy, sp.c, sp.s, (SPRITEBATCH_U64)sp.depth);
+}
 
 sprite_t get_sprite(const char* path);
 void init_sprite_system();

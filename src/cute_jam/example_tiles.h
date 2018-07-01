@@ -59,7 +59,8 @@ void do_tile_demo()
 	// Draw the tiles.
 	for (int i = 0; i < env->tile_demo_tile_count; ++i)
 	{
-		push_sprite(env->tile_demo_tiles[i].sprite);
+		tile_t tile = env->tile_demo_tiles[i];
+		if (tile.tileID != -1) push_sprite(tile.sprite);
 	}
 }
 
@@ -75,8 +76,8 @@ struct player_t : public entity_t
 	int dir = 0;
 	sprite_t quote_sprite;
 	float jetpackCD = 0; // 0 is ready to use
-	float jetpackPower = 150.0;
-	vec2 startPos;
+	float jetpackPower = 150.0, bounceHeight = 350;
+	vec2 startPos, lastMouseDir = v2(0,0);
 };
 
 player_t* create_player()
@@ -152,6 +153,12 @@ void update_player(entity_t* entity, float dt)
 			px = x; py = y;
 		}
 	}
+	if (key_down(KEY_9)) // kill player
+	{
+		player->quote_x = player->startPos.x;
+		player->quote_y = player->startPos.y;
+		player->quote_vel_x = 0;
+	}
 
 	// debug draw the mouse position
 	v2 mousep(g_mouse.x - env->windowWidth / 2.0,
@@ -159,8 +166,8 @@ void update_player(entity_t* entity, float dt)
 	//DrawDebugCircle(mousep, 10, 40);
 
 	// debug draw the line from player to mouse
-	//gl_line(env->ctx_gl, mousep.x, mousep.y, 0, ctx->quote_x,
-	//ctx->quote_y, 0);
+	gl_line(env->ctx_gl, mousep.x, mousep.y, 0,
+		player->quote_x - env->camera.p.x, player->quote_y - env->camera.p.y, 0);
 
 	// update the jetpack cooldown timer
 	if (player->jetpackCD > 0)
@@ -175,14 +182,18 @@ void update_player(entity_t* entity, float dt)
 	if (player->jetpackCD == 0
 		&& mouse_once(g_mouse.left_button)) // LMB pressed
 	{
-		v2 mouseDir(mousep.x - player->quote_x, mousep.y - player->quote_y);
+		v2 mouseDir(mousep.x - player->quote_x + env->camera.p.x, mousep.y - player->quote_y + env->camera.p.y);
+		player->lastMouseDir = mouseDir;
 		mouseDir = norm(mouseDir);
 
-		player->quote_vel_x = mouseDir.x * 150.0;
-		player->quote_vel_y = mouseDir.y * 150.0;
-
+		player->quote_vel_x += mouseDir.x * player->jetpackPower;
+		player->quote_vel_y += mouseDir.y * player->jetpackPower;
+		
+		play_sound("/data/sounds/jetpack.wav");
+		
 		player->jetpackCD += 1;
 	}
+	gl_line(env->ctx_gl, 0, 0, 0, player->lastMouseDir.x, player->lastMouseDir.y, 0);
 
 	// Quote's physics integration.
 	player->quote_vel_y += dt * -250.0f;
@@ -240,8 +251,8 @@ void update_player(entity_t* entity, float dt)
 				player->quote_vel_x = 0;
 				player->quote_vel_y = 0;
 				break;
-			case 44: // bouncy
-				player->quote_vel_y += 450;
+			case 7: // bouncy
+				player->quote_vel_y += player->bounceHeight;
 				break;
 			default:
 				break;
