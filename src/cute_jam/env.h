@@ -57,7 +57,7 @@ struct env_t
 	struct entity_t* entity_list = 0;
 
 	// Temporary "just trying something out" stuff goes here.
-	int which_demo = 0;
+	int which_demo = 3;
 	int spritebatch_demo_scene = 0;
 	int* tile_demo_shape_ids = 0;
 	int tile_demo_tile_count = 0;
