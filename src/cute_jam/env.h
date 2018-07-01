@@ -72,6 +72,10 @@ struct env_t
 
 	int map_width = 0;
 	int map_height = 0;
+	// Graphics
+	gl_shader_t mask_shader;
+	gl_renderable_t mask_renderable;
+	struct vertex_t* mask_verts =0;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);

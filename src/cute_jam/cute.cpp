@@ -37,6 +37,7 @@
 
 #include <cute_jam/coin.h>
 #include <cute_jam/dog.h>
+#include <cute_jam/mask_shader.h>
 
 #include <cute_jam/load_objects_from_map_cpp.h>
 
@@ -81,6 +82,10 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	create_pups();
 
 	init_coins();
+
+	setup_mask_shader();
+
+
 
 	srand(time(0));
 
@@ -145,6 +150,8 @@ EXPORT int main_loop(launcher_t* launcher)
 	}
 
 	draw_text(env->courier_new, "Press right arrow key to change demo.", 0, 220, 2);
+
+	update_mask_shader();
 
 	// Display the number of coins collected
 	char coin_text[16];
