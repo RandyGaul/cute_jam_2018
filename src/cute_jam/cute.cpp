@@ -35,6 +35,8 @@
 #include <cute_jam/example_tiles.h>
 #include <cute_jam/example_animation.h>
 
+#include <cute_jam/dog.h>
+
 // This must come last (or at least after all entity types, so the global vtable can be constructed).
 #include <cute_jam/entity_cpp.h>
 
@@ -68,6 +70,7 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 
 	// Setup the player.
 	create_player();
+	create_dog();
 
 	return 0;
 }

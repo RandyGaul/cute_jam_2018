@@ -61,6 +61,8 @@ struct env_t
 	int* tile_demo_shape_ids = 0;
 	int tile_demo_tile_count = 0;
 	struct tile_t* tile_demo_tiles = 0;
+
+	float game_time = 0;
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);

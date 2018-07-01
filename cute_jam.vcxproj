@@ -139,6 +139,7 @@
     <ClInclude Include="src\cute_jam\animation.h" />
     <ClInclude Include="src\cute_jam\audio.h" />
     <ClInclude Include="src\cute_jam\cute_headers.h" />
+    <ClInclude Include="src\cute_jam\dog.h" />
     <ClInclude Include="src\cute_jam\env.h" />
     <ClInclude Include="src\cute_jam\example_animation.h" />
     <ClInclude Include="src\cute_jam\font.h" />
