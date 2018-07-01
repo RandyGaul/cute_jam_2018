@@ -80,6 +80,13 @@ struct player_t : public entity_t
 	vec2 startPos, lastMouseDir = v2(0,0);
 };
 
+void kill_player(player_t* player)
+{
+	player->quote_x = player->startPos.x;
+	player->quote_y = player->startPos.y;
+	player->quote_vel_x = 0;
+}
+
 player_t* create_player()
 {
 	player_t* player = NEW(player_t);
@@ -219,9 +226,7 @@ void update_player(entity_t* entity, float dt)
 			switch (tile.tileID)
 			{
 			case 19:
-				player->quote_x = player->startPos.x;
-				player->quote_y = player->startPos.y;
-				player->quote_vel_x = 0;
+				kill_player(player);
 				break;
 			default:
 				break;

@@ -6,6 +6,8 @@
 #define MIN_DOGS 12
 #define MAX_DOGS 15
 
+#define DOG_DEBUG_COLLISION 0
+
 struct dog_t : public entity_t
 {
 	dog_t() { id = EID_DOG;  }
@@ -27,7 +29,7 @@ void create_dog()
 {
 	dog_t* dog = NEW(dog_t);
 	dog->dog_head_sprite = get_sprite("/data/cavestory/sprites/dog_head.png");
-	dog->num_sections = rand()% 3;
+	dog->num_sections = rand()% 4;
 	dog->pos.x = rand() % env->map_width - env->map_width / 2;
 	dog->pos.y = rand() % env->map_height - env->map_height / 2;
 	dog->angle = 45;
@@ -90,12 +92,20 @@ void collide(dog_t* dawg)
 	c2Manifold man;
 	c2Collide(&poly, 0, C2_POLY, &env->playa->quote_circle, 0, C2_CIRCLE, &man);
 
-	gl_line_color(env->ctx_gl, 1, 0, 0);
-
-	for (int i = 0; i < poly.count; i++) 
+	if (man.count) 
 	{
-		int nextIndex = i == poly.count - 1 ? 0 : i + 1;
-		gl_line(env->ctx_gl, poly.verts[i].x, poly.verts[i].y, 0, poly.verts[nextIndex].x, poly.verts[nextIndex].y, 0);
+		//kill_player(env->playa);
+	}
+
+	if (DOG_DEBUG_COLLISION) 
+	{
+		gl_line_color(env->ctx_gl, 1, 0, 0);
+
+		for (int i = 0; i < poly.count; i++)
+		{
+			int nextIndex = i == poly.count - 1 ? 0 : i + 1;
+			gl_line(env->ctx_gl, poly.verts[i].x, poly.verts[i].y, 0, poly.verts[nextIndex].x, poly.verts[nextIndex].y, 0);
+		}
 	}
 }
 
