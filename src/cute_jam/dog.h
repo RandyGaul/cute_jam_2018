@@ -12,6 +12,7 @@ struct dog_t : public entity_t
 	sprite_t dog_bootay_sprite;
 
 	v2 pos;
+	v2 vel;
 	int num_sections;
 	float angle;
 };
@@ -30,6 +31,8 @@ void create_dog()
 	dog->angle = 45;
 	dog->dog_head_sprite.sx *= 2;
 	dog->dog_head_sprite.sy *= 2;
+	dog->vel.x = 0;
+	dog->vel.y = 0;
 
 	dog->dog_bod_sprites = (sprite_t*)ALLOC(dog->num_sections * sizeof(sprite_t));
 
@@ -117,10 +120,8 @@ void update_sprite_rotations(dog_t* dog)
 	dog->dog_bootay_sprite.s = sinf(dog->angle);
 }
 
-void update_dog(entity_t* entity, float dt)
+void dog_intelligence(dog_t* dog, float dt)
 {
-	dog_t* dog = (dog_t*)entity;
-
 	if (distance(dog->pos, v2(env->playa->quote_x, env->playa->quote_y)) < DOG_VISION_RANGE)
 	{
 		v2 facing = norm(v2(dog->dog_head_sprite.x, dog->dog_head_sprite.y) - v2(dog->dog_bootay_sprite.x, dog->dog_bootay_sprite.y));
@@ -128,13 +129,22 @@ void update_dog(entity_t* entity, float dt)
 		if (acos(dot(facing, toPlayer)) < .05)
 		{
 			// charge towards player
+			dog->vel = toPlayer * DOG_MOVEMENT_SPEED;
 		}
 		else {
 			int dir = (facing.x * toPlayer.y - facing.y * toPlayer.x) > 0 ? 1 : -1;
 			dog->angle += dt * dir * DOG_ROTATION_SPEED;
 		}
 	}
+}
 
+void update_dog(entity_t* entity, float dt)
+{
+	dog_t* dog = (dog_t*)entity;
+
+	dog->pos += dog->vel * dt;
+
+	dog_intelligence(dog, dt);
 	update_sprite_rotations(dog);
 	update_sprite_positions(dog);
 
