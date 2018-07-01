@@ -68,8 +68,6 @@ struct env_t
 	int coin_count = 0;
 	float game_time = 0;
 	player_t* playa = 0;
-
-	vertex_t mask_verts[6];
 };
 
 void add_entity_to_list(entity_t** list_ptr, entity_t* entity);

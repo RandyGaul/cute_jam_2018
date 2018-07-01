@@ -1,8 +1,8 @@
 #pragma once
 
-#define DOG_VISION_RANGE 100
-#define DOG_MOVEMENT_SPEED 30
-#define DOG_ROTATION_SPEED 3
+#define DOG_VISION_RANGE 200
+#define DOG_MOVEMENT_SPEED 60
+#define DOG_ROTATION_SPEED 10
 
 struct dog_t : public entity_t
 {
@@ -25,7 +25,7 @@ void create_dog()
 {
 	dog_t* dog = NEW(dog_t);
 	dog->dog_head_sprite = get_sprite("/data/cavestory/sprites/dog_head.png");
-	dog->num_sections = 3;
+	dog->num_sections = 2;
 	dog->pos.x = rand() % 15 + 2;
 	dog->pos.y = 10;
 	dog->angle = 45;
@@ -135,6 +135,10 @@ void dog_intelligence(dog_t* dog, float dt)
 			int dir = (facing.x * toPlayer.y - facing.y * toPlayer.x) > 0 ? 1 : -1;
 			dog->angle += dt * dir * DOG_ROTATION_SPEED;
 		}
+	}
+	else
+	{
+		dog->vel = v2(0, 0);
 	}
 }
 
