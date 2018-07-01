@@ -16,6 +16,7 @@ struct tile_t
 	int x, y;
 	sprite_t sprite;
 	int shape_id;
+	int tileID;
 };
 
 int* load_tile_map_shape_ids(const char* path, int* tile_count_out);
@@ -233,6 +234,7 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 			id = 0;
 		}
 
+
 		int x = i % map_width;
 		int y = map_height - i / map_width;
 
@@ -317,6 +319,7 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 		tile.x = x;
 		tile.y = y;
 		tile.shape_id = shape_ids[id];
+		tile.tileID = id;
 
 		tiles[i] = tile;
 	}

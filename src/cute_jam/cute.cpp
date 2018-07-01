@@ -102,8 +102,8 @@ EXPORT int main_loop(launcher_t* launcher)
 	if (tick_count++ % 100 == 0)
 	{
 		float fps = 1.0f / dt_accum;
-		if (fps > 10000.0f) printf("fps : Really fast\n");
-		else printf("fps : %f\n", fps);
+		//if (fps > 10000.0f) printf("fps : Really fast\n");
+		//else printf("fps : %f\n", fps);
 	}
 
 	update_audio(dt);

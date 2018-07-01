@@ -76,11 +76,14 @@ struct player_t : public entity_t
 	sprite_t quote_sprite;
 	float jetpackCD = 0; // 0 is ready to use
 	float jetpackPower = 150.0;
+	vec2 startPos;
 };
 
 void create_player()
 {
 	player_t* player = NEW(player_t);
+	player->startPos.x = player->quote_x;
+	player->startPos.y = player->quote_y;
 	player->quote_sprite = get_sprite("/data/cavestory/sprites/quote.png");
 	player->quote_sprite.sx *= 2.0f;
 	player->quote_sprite.sy *= 2.0f;
@@ -178,34 +181,6 @@ void update_player(entity_t* entity, float dt)
 		player->jetpackCD += 1;
 	}
 
-/*
-	if (key_once(KEY_SPACE))
-	{
-		player->quote_vel_y = 250.0f;
-	}
-
-	if (key_down(KEY_A))
-	{
-		player->dir = 1;
-	}
-
-	else if (key_down(KEY_D))
-	{
-		player->dir = 2;
-	}
-
-	else
-	{
-		player->dir = 0;
-	}
-
-	switch (player->dir)
-	{
-	case 0: player->quote_vel_x = 0; break;
-	case 1: player->quote_vel_x = -100.0f; break;
-	case 2: player->quote_vel_x = 100.0f; break;
-	}*/
-
 	// Quote's physics integration.
 	player->quote_vel_y += dt * -250.0f;
 	player->quote_x += dt * player->quote_vel_x;
@@ -226,6 +201,18 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
+			printf("%d\n",tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19:
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				break;
+			default:
+				break;
+			}
+
 			// Move quote out of colliding configuration.
 			float depth = -m.depths[0];
 			c2v n = m.n;
