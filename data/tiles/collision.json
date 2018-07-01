@@ -1,0 +1,51 @@
+{ "height":4,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[1, 2, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1],
+         "height":4,
+         "name":"collision",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":4,
+         "x":0,
+         "y":0
+        }],
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.1.5",
+ "tileheight":15,
+ "tilesets":[
+        {
+         "columns":2,
+         "firstgid":1,
+         "image":"debug_shapes.png",
+         "imageheight":16,
+         "imagewidth":32,
+         "margin":0,
+         "name":"debug shapes",
+         "spacing":0,
+         "tilecount":2,
+         "tileheight":16,
+         "tilewidth":16
+        }, 
+        {
+         "columns":4,
+         "firstgid":3,
+         "image":"game_tiles.png",
+         "imageheight":64,
+         "imagewidth":64,
+         "margin":0,
+         "name":"simple tiles",
+         "spacing":0,
+         "tilecount":16,
+         "tileheight":16,
+         "tilewidth":16
+        }],
+ "tilewidth":15,
+ "type":"map",
+ "version":1,
+ "width":4
+}

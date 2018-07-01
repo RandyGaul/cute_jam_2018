@@ -6,10 +6,10 @@ void example_tiles_shutdown();
 
 void load_tile_demo_images()
 {
-	const char* path = "/data/cavestory/tiles/cavestory_tiles";
+	const char* path = "/data/tiles/game_tiles";
 	char buf[256];
 
-	for (int i = 0; i < 2736; ++i)
+	for (int i = 0; i < 16; ++i)
 	{
 		sprintf(buf, "%s%d.png", path, i + 1);
 		load_image(buf);
@@ -18,10 +18,10 @@ void load_tile_demo_images()
 
 void free_tile_demo_images()
 {
-	const char* path = "/data/cavestory/tiles/cavestory_tiles";
+	const char* path = "/data/tiles/game_tiles";
 	char buf[256];
 
-	for (int i = 0; i < 2736; ++i)
+	for (int i = 0; i < 16; ++i)
 	{
 		sprintf(buf, "%s%d.png", path, i + 1);
 		_CrtCheckMemory();
@@ -32,11 +32,11 @@ void free_tile_demo_images()
 void example_tiles_init()
 {
 	// load the collision shape for each tile type
-	int* shape_ids = load_tile_map_shape_ids("/data/cavestory/tiles/collision.json", 0);
+	int* shape_ids = load_tile_map_shape_ids("/data/tiles/collision.json", 0);
 	env->tile_demo_shape_ids = shape_ids;
 
 	// load up the tile image ids, positions, and transforms
-	env->tile_demo_tiles = load_tile_map("/data/cavestory/tiles/cavestory_tiles.json", &env->tile_demo_tile_count, shape_ids, "/data/cavestory/tiles/cavestory_tiles");
+	env->tile_demo_tiles = load_tile_map("/data/tiles/level0.json", &env->tile_demo_tile_count, shape_ids, "/data/tiles/game_tiles");
 
 	load_tile_demo_images();
 }
@@ -76,11 +76,14 @@ struct player_t : public entity_t
 	sprite_t quote_sprite;
 	float jetpackCD = 0; // 0 is ready to use
 	float jetpackPower = 150.0;
+	vec2 startPos;
 };
 
 player_t* create_player()
 {
 	player_t* player = NEW(player_t);
+	player->startPos.x = player->quote_x;
+	player->startPos.y = player->quote_y;
 	player->quote_sprite = get_sprite("/data/cavestory/sprites/quote.png");
 	player->quote_sprite.sx *= 2.0f;
 	player->quote_sprite.sy *= 2.0f;
@@ -179,34 +182,6 @@ void update_player(entity_t* entity, float dt)
 		player->jetpackCD += 1;
 	}
 
-/*
-	if (key_once(KEY_SPACE))
-	{
-		player->quote_vel_y = 250.0f;
-	}
-
-	if (key_down(KEY_A))
-	{
-		player->dir = 1;
-	}
-
-	else if (key_down(KEY_D))
-	{
-		player->dir = 2;
-	}
-
-	else
-	{
-		player->dir = 0;
-	}
-
-	switch (player->dir)
-	{
-	case 0: player->quote_vel_x = 0; break;
-	case 1: player->quote_vel_x = -100.0f; break;
-	case 2: player->quote_vel_x = 100.0f; break;
-	}*/
-
 	// Quote's physics integration.
 	player->quote_vel_y += dt * -250.0f;
 	player->quote_x += dt * player->quote_vel_x;
@@ -227,6 +202,18 @@ void update_player(entity_t* entity, float dt)
 
 		if (m.count)
 		{
+			printf("%d\n",tile.tileID);
+			switch (tile.tileID)
+			{
+			case 19:
+				player->quote_x = player->startPos.x;
+				player->quote_y = player->startPos.y;
+				player->quote_vel_x = 0;
+				break;
+			default:
+				break;
+			}
+
 			// Move quote out of colliding configuration.
 			float depth = -m.depths[0];
 			c2v n = m.n;

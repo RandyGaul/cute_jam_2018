@@ -16,6 +16,7 @@ struct tile_t
 	int x, y;
 	sprite_t sprite;
 	int shape_id;
+	int tileID;
 };
 
 int* load_tile_map_shape_ids(const char* path, int* tile_count_out);
@@ -25,7 +26,7 @@ void debug_draw_tile_shapes(tile_t* tiles, int tile_count);
 
 //--------------------------------------------------------------------------------------------------
 
-void init_tile_shapes()
+void init_cavestory_tile_shapes()
 {
 	c2AABB bb;
 	bb.min = c2V(-0.5f, -0.5f);
@@ -63,6 +64,25 @@ void init_tile_shapes()
 	env->shapes[1] = shape1;
 	env->shapes[2] = shape2;
 	env->shape_count = 3;
+}
+
+void init_tile_shapes()
+{
+	c2AABB bb;
+
+	v2 min = v2(-0.5f, -0.5f);
+	v2 max = v2(0.5f, -0.5f + (5.0f / 16.0f));
+
+	bb.min = c2V(min.x, min.y);
+	bb.max = c2V(max.x, max.y);
+
+	shape_t shape0;
+	shape0.u.aabb = bb;
+	shape0.type = C2_AABB;
+
+	env->shapes = (shape_t*)ALLOC(sizeof(shape_t) * 1);
+	env->shapes[0] = shape0;
+	env->shape_count = 1;
 }
 
 void free_tile_shapes()
@@ -233,6 +253,7 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 			id = 0;
 		}
 
+
 		int x = i % map_width;
 		int y = map_height - i / map_width;
 
@@ -317,6 +338,7 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 		tile.x = x;
 		tile.y = y;
 		tile.shape_id = shape_ids[id];
+		tile.tileID = id;
 
 		tiles[i] = tile;
 	}

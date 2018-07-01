@@ -38,6 +38,8 @@ struct v2
 	float y;
 };
 
+using vec2 = v2;
+
 // 2d rotation composed of cos/sin pair
 struct rotation
 {
