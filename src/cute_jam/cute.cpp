@@ -45,6 +45,8 @@
 
 EXPORT int single_time_initialization(launcher_t* launcher)
 {
+	srand(time(0));
+
 	// Setup initial global variables and state.
 	global_alloc = launcher->alloc_fn;
 	global_free = launcher->free_fn;
@@ -75,9 +77,7 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 
 	// Setup the player.
 	env->player = create_player();
-	create_dog();
-
-	srand(time(0));
+	create_pups();
 
 	return 0;
 }

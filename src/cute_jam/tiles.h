@@ -226,6 +226,9 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 	int map_width = map->width;
 	int map_height = map->height;
 
+	env->map_width = map_width * 32;
+	env->map_height = map_height * 32;
+
 	tile_t* tiles = (tile_t*)ALLOC(sizeof(tile_t) * map_width * map_height);
 
 	// create tiles based off of the parsed map file data
