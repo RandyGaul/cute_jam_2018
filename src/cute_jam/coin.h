@@ -1,7 +1,5 @@
 struct coin_t;
 void set_coin_position(coin_t* coin, int x, int y);
-const int COIN_ID = 0;
-const int TILE_SIZE = 16;
 
 struct coin_t : public entity_t
 {
@@ -9,6 +7,12 @@ struct coin_t : public entity_t
 	sprite_t sprite;
 	c2Circle circle;
 };
+
+void init_coins()
+{
+	prefetch_audio("/data/sounds/coin.wav");
+	prefetch_audio("/data/sounds/meow.wav");
+}
 
 coin_t* create_coin(int x = 0, int y = 0)
 {

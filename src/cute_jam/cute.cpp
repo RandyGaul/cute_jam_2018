@@ -75,6 +75,8 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	env->player = create_player();
 	create_dog();
 
+	init_coins();
+
 	srand(time(0));
 
 	return 0;
