@@ -10,13 +10,13 @@ void create_dog()
 {
 	dog_t* dog = NEW(dog_t);
 	dog->dog_sprite = get_sprite("/data/cavestory/sprites/dog_head.png");
+	dog->dog_sprite.x = rand() % 15;
 	add_entity_to_list(&env->entity_list, dog);
 }
 
 void update_dog(entity_t* entity, float dt)
 {
 	dog_t* dog = (dog_t*)entity;
-	dog->dog_sprite.x = 0;
 	dog->dog_sprite.y = sin(env->game_time * 10) * 5;
 }
 

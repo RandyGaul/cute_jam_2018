@@ -72,6 +72,8 @@ EXPORT int single_time_initialization(launcher_t* launcher)
 	create_player();
 	create_dog();
 
+	srand(time(0));
+
 	return 0;
 }
 
@@ -90,6 +92,8 @@ EXPORT int main_loop(launcher_t* launcher)
 	// Calc dt, and get SDL events (like user input).
 	float dt = ct_time();
 	pump_SDL_messages();
+
+	env->game_time += dt;
 
 	// get the window width and height
 	int w, h;
