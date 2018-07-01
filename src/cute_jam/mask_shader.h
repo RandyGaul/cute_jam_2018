@@ -9,31 +9,33 @@ void setup_mask_shader()
 
 		uniform mat4 u_mvp;
 
-	in vec2 in_pos;
-	in vec2 in_uv;
+		in vec2 in_pos;
+		in vec2 in_uv;
 
-	out vec2 v_uv;
+		out vec2 v_uv;
 
-	void main()
-	{
-		v_uv = in_uv;
-		gl_Position = u_mvp * vec4(in_pos, 0, 1);
-	}
+		void main()
+		{
+			v_uv = in_uv;
+			gl_Position = u_mvp * vec4(in_pos, 0, 1);
+		}
 	);
 
 	const char* ps = STR(
 		#version 300 es\n
 		precision mediump float;
 
-	uniform sampler2D u_sprite_texture;
+		uniform float u_cutoff;
+		uniform vec4 u_color;
 
-	in vec2 v_uv;
-	out vec4 out_col;
+		in vec2 v_uv;
+		out vec4 out_col;
 
-	void main()
-	{
-		out_col = texture(u_sprite_texture, v_uv);
-	}
+		void main()
+		{
+			float c = u_cutoff < v_uv.x ? 1.0f : 0.0f;
+			out_col = u_color * c;
+		}
 	);
 
 	gl_vertex_data_t vd;
@@ -48,17 +50,31 @@ void setup_mask_shader()
 	gl_send_matrix(&env->mask_shader, "u_mvp", env->projection);
 }
 
-void update_mask_shader()
+void draw_meter(vertex_t* verts, int x, int y, int w, int h, float* color, float cutoff)
 {
-	static vertex_t verts[6];
-	env->mask_verts = verts;
-	make_sprite_quad(0, 0, 100, 100, env->mask_verts);
+	make_sprite_quad(x, y, w, h, verts);
 	gl_draw_call_t call;
 	call.r = &env->mask_renderable;
 	call.textures[0] = 0;
 	call.texture_count = 1;
-	call.verts = env->mask_verts;
+	call.verts = verts;
 	call.vert_count = 6;
-	gl_send_texture(call.r->program, "u_sprite_texture", 0);
+	gl_send_f32(call.r->program, "u_cutoff", 1, &cutoff, 1);
+	gl_send_f32(call.r->program, "u_color", 1, color, 4);
 	gl_push_draw_call(env->ctx_gl, call);
+}
+
+void update_mask_shader()
+{
+	const int meter_width = 50;
+	const int meter_height = 10;
+	const int vertical_offset = -25;
+	const int border = 2;
+/*
+	float white[] = { 1,1,1,1 };
+	static vertex_t border_verts[6];
+	draw_meter(border_verts, env->player->quote_sprite.x, env->player->quote_sprite.y + vertical_offset, meter_width + border*2, meter_height + border*2, white, 0);*/
+	float red[] = { 1,0,0,1 };
+	static vertex_t meter_verts[6];
+	draw_meter(meter_verts, env->player->quote_sprite.x, env->player->quote_sprite.y + vertical_offset, meter_width, meter_height, red, env->playa->jetpackCD);
 }
