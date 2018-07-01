@@ -1,4 +1,3 @@
-@echo off
 
 if not exist .\bin mkdir .\bin
 pushd .\bin
@@ -15,7 +14,7 @@ REM Turn off/on debug console
 set CONSOLE= -subsystem:console
 REM set CONSOLE= -subsystem:windows
 
-set CFLAGS= -Zi -nologo -I../ /Fdcute_jam.pdb
+set CFLAGS= -Zi -nologo -I../ -I../src /Fdcute_jam.pdb
 set CFLAGS= -D__WINDOWS__ -EHa- -wd4577 %CFLAGS%
 set LFLAGS= -incremental:no -opt:ref
 

@@ -91,9 +91,9 @@ EXPORT int main_loop(launcher_t* launcher)
 	// Calc and display fps
 	static float dt_accum;
 	static uint64_t tick_count = 0;
-	dt_accum = (dt - dt_accum) * (1.0f / 10.0f);
+	dt_accum = (dt - dt_accum) * (1.0f / 10.0f) + dt_accum;
 	if (dt_accum < 0) dt_accum = 0;
-	if (tick_count++ % 100 == 0)
+	if (tick_count++ % 10 == 0)
 	{
 		float fps = 1.0f / dt_accum;
 		if (fps > 10000.0f) printf("fps : Really fast\n");
