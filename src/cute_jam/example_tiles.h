@@ -179,8 +179,8 @@ void update_player(entity_t* entity, float dt)
 		player->lastMouseDir = mouseDir;
 		mouseDir = norm(mouseDir);
 
-		player->quote_vel_x = mouseDir.x * 150.0;
-		player->quote_vel_y = mouseDir.y * 150.0;
+		player->quote_vel_x = mouseDir.x * player->jetpackPower;
+		player->quote_vel_y = mouseDir.y * player->jetpackPower;
 		
 		play_sound("/data/sounds/jetpack.wav");
 		
