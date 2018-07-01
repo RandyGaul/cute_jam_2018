@@ -12,6 +12,8 @@ struct vtable_t
 
 vtable_t g_vtable[] = {
 	VTABLE_ENTRY(player),
+	VTABLE_ENTRY(coin),
+	VTABLE_ENTRY(dog)
 };
 
 void update_entities(entity_t* entity_list, float dt)
@@ -53,4 +55,9 @@ void add_entity_to_list(entity_t** list_ptr, entity_t* entity)
 	{
 		*list_ptr = entity;
 	}
+}
+
+void remove_entity(entity_t* entity)
+{
+	DLIST_REMOVE(entity);
 }

@@ -109,7 +109,7 @@ void init_spritebatcher()
 	spritebatch_set_default_config(&config);
 	config.pixel_stride = sizeof(cp_pixel_t);
 	config.lonely_buffer_count_till_flush = 1;
-	config.ticks_to_decay_texture = 1;
+	config.ticks_to_decay_texture = 1024;
 
 	// Assign the four callbacks so the sprite batcher knows how to get
 	// pixels whenever it needs them, and assign them GPU texture handles.

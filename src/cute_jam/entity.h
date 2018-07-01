@@ -2,6 +2,8 @@ enum entity_id_t
 {
 	EID_NONE,
 	EID_PLAYER,
+	EID_COIN,
+	EID_DOG,
 	// Add more types here.
 
 	EID_COUNT

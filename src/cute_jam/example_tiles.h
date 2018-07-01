@@ -6,10 +6,10 @@ void example_tiles_shutdown();
 
 void load_tile_demo_images()
 {
-	const char* path = "/data/cavestory/tiles/cavestory_tiles";
+	const char* path = "/data/tiles/game_tiles";
 	char buf[256];
 
-	for (int i = 0; i < 2736; ++i)
+	for (int i = 0; i < 16; ++i)
 	{
 		sprintf(buf, "%s%d.png", path, i + 1);
 		load_image(buf);
@@ -18,10 +18,10 @@ void load_tile_demo_images()
 
 void free_tile_demo_images()
 {
-	const char* path = "/data/cavestory/tiles/cavestory_tiles";
+	const char* path = "/data/tiles/game_tiles";
 	char buf[256];
 
-	for (int i = 0; i < 2736; ++i)
+	for (int i = 0; i < 16; ++i)
 	{
 		sprintf(buf, "%s%d.png", path, i + 1);
 		_CrtCheckMemory();
@@ -32,11 +32,11 @@ void free_tile_demo_images()
 void example_tiles_init()
 {
 	// load the collision shape for each tile type
-	int* shape_ids = load_tile_map_shape_ids("/data/cavestory/tiles/collision.json", 0);
+	int* shape_ids = load_tile_map_shape_ids("/data/tiles/collision.json", 0);
 	env->tile_demo_shape_ids = shape_ids;
 
 	// load up the tile image ids, positions, and transforms
-	env->tile_demo_tiles = load_tile_map("/data/cavestory/tiles/cavestory_tiles.json", &env->tile_demo_tile_count, shape_ids, "/data/cavestory/tiles/cavestory_tiles");
+	env->tile_demo_tiles = load_tile_map("/data/tiles/level0.json", &env->tile_demo_tile_count, shape_ids, "/data/tiles/game_tiles");
 
 	load_tile_demo_images();
 }
@@ -79,7 +79,7 @@ struct player_t : public entity_t
 	vec2 startPos;
 };
 
-void create_player()
+player_t* create_player()
 {
 	player_t* player = NEW(player_t);
 	player->startPos.x = player->quote_x;
@@ -90,6 +90,7 @@ void create_player()
 	player->quote_circle.r = player->quote_sprite.sy / 2.0f;
 
 	add_entity_to_list(&env->entity_list, player);
+	return player;
 }
 
 void DrawDebugCircle(c2v p, float r, int kSegs, float _r = 1, float _g = 1, float _b = 1)
