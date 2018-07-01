@@ -1,5 +1,9 @@
 #pragma once
 
+#define DOG_VISION_RANGE 100
+#define DOG_MOVEMENT_SPEED 30
+#define DOG_ROTATION_SPEED 3
+
 struct dog_t : public entity_t
 {
 	dog_t() { id = EID_DOG;  }
@@ -117,8 +121,19 @@ void update_dog(entity_t* entity, float dt)
 {
 	dog_t* dog = (dog_t*)entity;
 
-	dog->pos.y = sin(env->game_time * 3) * 10 + 10;
-	dog->angle += dt * 3;
+	if (distance(dog->pos, v2(env->playa->quote_x, env->playa->quote_y)) < DOG_VISION_RANGE)
+	{
+		v2 facing = norm(v2(dog->dog_head_sprite.x, dog->dog_head_sprite.y) - v2(dog->dog_bootay_sprite.x, dog->dog_bootay_sprite.y));
+		v2 toPlayer = norm(v2(env->playa->quote_x, env->playa->quote_y) - dog->pos);
+		if (acos(dot(facing, toPlayer)) < .05)
+		{
+			// charge towards player
+		}
+		else {
+			int dir = (facing.x * toPlayer.y - facing.y * toPlayer.x) > 0 ? 1 : -1;
+			dog->angle += dt * dir * DOG_ROTATION_SPEED;
+		}
+	}
 
 	update_sprite_rotations(dog);
 	update_sprite_positions(dog);
