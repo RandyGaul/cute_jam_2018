@@ -254,11 +254,11 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 		int id = global_tile_id - tileset->firstgid;
 
 		// Special case handling for "no tile".
+		int special_case_no_tile = 0;
 		if (id < 0)
 		{
-			id = 0;
+			special_case_no_tile = 1;
 		}
-
 
 		int x = i % map_width;
 		int y = map_height - i / map_width;
@@ -266,7 +266,8 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 		char buf[256];
 		sprintf(buf, "%s%d.png", image_path_base, id + 1);
 
-		sprite_t sprite = get_sprite(buf);
+		sprite_t sprite;
+		if (!special_case_no_tile) sprite = get_sprite(buf);
 		sprite.depth = 0;
 		sprite.x = (float)x;
 		sprite.y = (float)y;
@@ -351,9 +352,13 @@ tile_t* load_tile_map(const char* path, int* tile_count_out, int* shape_ids, con
 
 	// The objects layer.
 	layer = map->layers->next;
-	cute_tiled_object_t* object = layer->objects;
 
-	load_objects_from_map(object, (float)map->width, (float)map->height, 16.0f);
+	if (layer)
+	{
+		cute_tiled_object_t* object = layer->objects;
+
+		load_objects_from_map(object, (float)map->width, (float)map->height, 16.0f);
+	}
 
 	cute_tiled_free_map(map);
 

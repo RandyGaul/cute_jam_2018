@@ -59,7 +59,8 @@ void do_tile_demo()
 	// Draw the tiles.
 	for (int i = 0; i < env->tile_demo_tile_count; ++i)
 	{
-		push_sprite(env->tile_demo_tiles[i].sprite);
+		tile_t tile = env->tile_demo_tiles[i];
+		if (tile.tileID != -1) push_sprite(tile.sprite);
 	}
 }
 
